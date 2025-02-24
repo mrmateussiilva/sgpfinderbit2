@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Pedidos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+    <h1 class="mb-4">Cadastro de Pedidos</h1>
+
+    <!-- Formulário de Cabeçalho -->
+    <form id="pedidoForm">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="numeroPedido" class="form-label">Número do Pedido</label>
+                <input type="text" class="form-control" id="numeroPedido" required>
+            </div>
+            <div class="col-md-3">
+                <label for="cliente" class="form-label">Cliente</label>
+                <input type="text" class="form-control" id="cliente" required>
+            </div>
+            <div class="col-md-3">
+                <label for="cidade" class="form-label">Cidade</label>
+                <input type="text" class="form-control" id="cidade" required>
+            </div>
+            <div class="col-md-3">
+                <label for="dataEntrada" class="form-label">Data de Entrada</label>
+                <input type="date" class="form-control" id="dataEntrada" required>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="dataEntrega" class="form-label">Data de Entrega</label>
+                <input type="date" class="form-control" id="dataEntrega" required>
+            </div>
+            <div class="col-md-3">
+                <label for="formaEnvio" class="form-label">Forma de Envio</label>
+                <input type="text" class="form-control" id="formaEnvio" required>
+            </div>
+            <div class="col-md-6">
+                <label for="observacao" class="form-label">Observação</label>
+                <textarea class="form-control" id="observacao" rows="1"></textarea>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="adicionarTab()">Adicionar Produção</button>
+        <button type="button" class="btn btn-success" onclick="salvarPedido()">Salvar Pedido</button>
+    </form>
+
+    <hr>
+
+    <!-- Abas de Produção -->
+    <ul class="nav nav-tabs" id="tabsProducoes"></ul>
+    <div class="tab-content mt-3" id="conteudoProducoes"></div>
+
+    <hr>
+
+    <!-- Tabela de Pedidos -->
+    <h2>Pedidos Salvos</h2>
+    <table class="table table-bordered" id="tabelaPedidos">
+        <thead>
+            <tr>
+                <th>Número</th>
+                <th>Cliente</th>
+                <th>Cidade</th>
+                <th>Data Entrada</th>
+                <th>Data Entrega</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+let tabCount = 0;
+
+// Adiciona uma nova aba de produção
+function adicionarTab() {
+    tabCount++;
+    const tabId = `tab${tabCount}`;
+
+    // Adiciona a aba
+    document.getElementById('tabsProducoes').innerHTML += `
+        <li class="nav-item">
+            <a class="nav-link ${tabCount === 1 ? 'active' : ''}" id="${tabId}-tab" data-bs-toggle="tab" href="#${tabId}">
+                Produção ${tabCount} <button type="button" class="btn-close ms-2" aria-label="Close" onclick="removerTab('${tabId}')"></button>
+            </a>
+        </li>`;
+
+    // Adiciona o conteúdo da aba
+    document.getElementById('conteudoProducoes').innerHTML += `
+        <div class="tab-pane fade ${tabCount === 1 ? 'show active' : ''}" id="${tabId}">
+            <label for="tipoProducao${tabCount}" class="form-label">Tipo de Produção</label>
+            <select class="form-select" id="tipoProducao${tabCount}" onchange="mostrarCampos('${tabId}', this.value)">
+                <option value="">Selecione...</option>
+                <option value="Painel">Painel</option>
+                <option value="Totem">Totem</option>
+            </select>
+
+            <div id="camposProducao${tabId}" class="mt-3"></div>
+        </div>`;
+}
+
+// Remove uma aba de produção
+function removerTab(tabId) {
+    document.getElementById(`${tabId}-tab`).remove();
+    document.getElementById(tabId).remove();
+}
+
+// Mostra os campos conforme o tipo de produção
+function mostrarCampos(tabId, tipo) {
+    const container = document.getElementById(`camposProducao${tabId}`);
+    container.innerHTML = '';
+
+    if (tipo === 'Painel') {
+        container.innerHTML = `
+            <div class="mb-3">
+                <label for="descricaoPainel${tabId}" class="form-label">Descrição do Painel</label>
+                <input type="text" class="form-control" id="descricaoPainel${tabId}">
+            </div>
+            <div class="mb-3">
+                <label for="tamanhoPainel${tabId}" class="form-label">Tamanho (L x A)</label>
+                <input type="text" class="form-control" id="tamanhoPainel${tabId}">
+            </div>
+        `;
+    } else if (tipo === 'Totem') {
+        container.innerHTML = `
+            <div class="mb-3">
+                <label for="descricaoTotem${tabId}" class="form-label">Descrição do Totem</label>
+                <input type="text" class="form-control" id="descricaoTotem${tabId}">
+            </div>
+            <div class="mb-3">
+                <label for="alturaTotem${tabId}" class="form-label">Altura</label>
+                <input type="text" class="form-control" id="alturaTotem${tabId}">
+            </div>
+        `;
+    }
+}
+
+// Salva o pedido no localStorage
+function salvarPedido() {
+    const numeroPedido = document.getElementById('numeroPedido').value;
+    const cliente = document.getElementById('cliente').value;
+    const cidade = document.getElementById('cidade').value;
+    const dataEntrada = document.getElementById('dataEntrada').value;
+    const dataEntrega = document.getElementById('dataEntrega').value;
+    const formaEnvio = document.getElementById('formaEnvio').value;
+    const observacao = document.getElementById('observacao').value;
+
+    const pedido = {
+        numeroPedido, cliente, cidade, dataEntrada, dataEntrega, formaEnvio, observacao
+    };
+
+    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    pedidos.push(pedido);
+    localStorage.setItem('pedidos', JSON.stringify(pedidos));
+
+    carregarPedidos();
+}
+
+// Carrega os pedidos salvos
+function carregarPedidos() {
+    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    const tbody = document.querySelector('#tabelaPedidos tbody');
+    tbody.innerHTML = '';
+
+    pedidos.forEach((pedido, index) => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${pedido.numeroPedido}</td>
+                <td>${pedido.cliente}</td>
+                <td>${pedido.cidade}</td>
+                <td>${pedido.dataEntrada}</td>
+                <td>${pedido.dataEntrega}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm" onclick="excluirPedido(${index})">X</button>
+                </td>
+            </tr>`;
+    });
+}
+
+// Exclui um pedido
+function excluirPedido(index) {
+    const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+    pedidos.splice(index, 1);
+    localStorage.setItem('pedidos', JSON.stringify(pedidos));
+    carregarPedidos();
+}
+
+// Carrega os pedidos ao iniciar
+window.onload = carregarPedidos;
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

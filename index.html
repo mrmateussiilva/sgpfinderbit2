@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home do Sistema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .tile {
+            height: 150px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+        .tile:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+<div class="container py-5">
+    <h1 class="text-center mb-4">Bem-vindo ao Sistema</h1>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="pedidos.html" class="text-decoration-none">
+                <div class="tile bg-primary">
+                    <div>
+                        <i class="bi bi-journal-text fs-1"></i>
+                        <h4 class="mt-2">Pedidos</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="#" class="text-decoration-none">
+                <div class="tile bg-success">
+                    <div>
+                        <i class="bi bi-cash-stack fs-1"></i>
+                        <h4 class="mt-2">Financeiro</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="#" class="text-decoration-none">
+                <div class="tile bg-warning">
+                    <div>
+                        <i class="bi bi-tools fs-1"></i>
+                        <h4 class="mt-2">Produção</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="#" class="text-decoration-none">
+                <div class="tile bg-danger">
+                    <div>
+                        <i class="bi bi-box-seam fs-1"></i>
+                        <h4 class="mt-2">Estoque</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="#" class="text-decoration-none">
+                <div class="tile bg-info">
+                    <div>
+                        <i class="bi bi-people fs-1"></i>
+                        <h4 class="mt-2">Clientes</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="#" class="text-decoration-none">
+                <div class="tile bg-secondary">
+                    <div>
+                        <i class="bi bi-gear fs-1"></i>
+                        <h4 class="mt-2">Configurações</h4>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Ícones do Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>
